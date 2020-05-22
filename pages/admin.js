@@ -10,7 +10,6 @@ import { MDBRow, MDBCol, MDBIcon } from "mdbreact";
 import Loading from '../components/loader';
 class adminDash extends React.Component {
     render() {
-
         return (
             <div>
                 <div className="full-height">
