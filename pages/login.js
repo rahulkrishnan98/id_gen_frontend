@@ -8,10 +8,22 @@ import { Row, Col } from "reactstrap";
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdbreact';
 import Loading from '../components/loader';
 import AuthService from '../utils/AuthService';
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import UserContext from '../utils/UserContext';
 
 const login = () => {
+    const { isLogged, role } = useContext(UserContext);
+    console.log(isLogged);
+    useEffect(() => {
+        if (isLogged) {
+            if (role === 'user') {
+                Router.push("/client");
+            }
+            else {
+                Router.push("/admin");
+            }
+        }
+    });
     const { signIn } = useContext(UserContext);
     const [mail, setMail] = useState('');
     const [pass, setPass] = useState('');

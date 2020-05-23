@@ -9,10 +9,17 @@ import useContext from 'react';
 import Router from 'next/router';
 import UserContext from '../utils/UserContext';
 import AuthService from '../utils/AuthService';
+import NProgress from 'nprogress'; //nprogress module
+import 'nprogress/nprogress.css'; //styles of nprogress
 
+//Binding events. 
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 export default class MyApp extends App {
     state = {
-        isLogged: false
+        isLogged: false,
+        role: 'user'
     }
     componentDidMount = () => {
         const user = localStorage.getItem('id_token');
@@ -37,14 +44,19 @@ export default class MyApp extends App {
                 this.setState({
                     isLogged: true
                 })
-                Router.push('/client');
+                if (mail === 'admin@test.com') {
+                    this.setState({
+                        role: "admin"
+                    })
+                }
             }
             if (res.status == 401) {
                 Router.push('/login');
                 alert("Invalid Login");
             }
+
         });
-    }
+    };
 
     signOut = () => {
         localStorage.removeItem('id_token');
@@ -56,7 +68,7 @@ export default class MyApp extends App {
     render() {
         const { Component, pageProps } = this.props;
         return (
-            <UserContext.Provider value={{ isLogged: this.state.isLogged, signIn: this.signIn, singOut: this.signOut }}>
+            <UserContext.Provider value={{ isLogged: this.state.isLogged, role: this.state.role, signIn: this.signIn, signOut: this.signOut }}>
                 <Component {...pageProps} />
             </UserContext.Provider>
         );
