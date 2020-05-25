@@ -11,16 +11,27 @@ import { MDBRow, MDBCol, MDBIcon } from "mdbreact";
 import Loading from '../components/loader';
 import { useState, useContext } from 'react';
 import UserContext from '../utils/UserContext';
-
-function adminDash() {
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
+import Axios from 'axios';
+import Auth from '../utils/AuthService';
+import OrderForm from '../components/OrderForm';
+function adminDash(props) {
     const { role } = useContext(UserContext);
     useEffect(() => {
         if (role === 'user') {
             Router.push('/');
         }
     });
+    const { signOut } = useContext(UserContext);
+    const redirectMe = e => {
+        e.preventDefault();
+        signOut();
+    };
+
     return (
         <div>
+            <h5 style={{ float: "right" }}><Button type="button" onClick={e => redirectMe(e)} variant='outline-dark'>Log-out</Button> </h5>
             <div className="full-height">
                 <Jumbotron>
                     <h1 style={{ textAlign: "center" }}>Admin Dashboard</h1>
@@ -29,37 +40,42 @@ function adminDash() {
                         <Container>
                             <Row>
                                 <Col sm-6 md-4>
-                                    <h3> Upload Client Design</h3>
-                                    <p> We store all files indexed by client id. Please save your file as <strong>clientID</strong>.png <br /></p>
-                                    <div className="input-group">
-                                        <div className="input-group-prepend">
-                                            <span className="input-group-text" id="inputGroupFileAddon01">
-                                                Upload
-                                                </span>
-                                        </div>
-                                        <div className="custom-file">
-                                            <input
-                                                type="file"
-                                                className="custom-file-input"
-                                                id="inputGroupFile01"
-                                                aria-describedby="inputGroupFileAddon01"
-                                            />
-                                            <label className="custom-file-label" htmlFor="inputGroupFile01">
-                                                clientCode.png
-                                                </label>
-                                        </div>
-                                    </div>
+                                    <h3> Start a new Job</h3>
+                                    <OrderForm />
+
                                 </Col>
                                 <Col sm-6 md-4>
-                                    <h3>Client Updates</h3>
+                                    <h3>Client Details</h3>
                                     <Jumbotron>
-
+                                        <div style={{
+                                            height: "200px",
+                                            overflow: "scroll"
+                                        }}>
+                                            <Table responsive striped bordered hover variant="dark">
+                                                <thead>
+                                                    <tr>
+                                                        <th><strong>Organization</strong></th>
+                                                        <th><strong>Client Code</strong></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {props.clientCode.map((value, index) => {
+                                                        return (
+                                                            <tr>
+                                                                <td>{props.organizationName[index]}</td>
+                                                                <td>{props.clientCode[index]}</td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                            </Table>
+                                        </div>
                                     </Jumbotron>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col sm-6 md-4>
-                                    <h3>Order Statistics</h3>
+                                    <h3>Order Dash</h3>
                                 </Col>
                             </Row>
                             <Row>
@@ -67,15 +83,17 @@ function adminDash() {
                                     <Jumbotron>
                                         <Row>
                                             <Col sm-4 md-3>
-                                                <h4>Total Revenue <MDBIcon icon="rupee-sign" /></h4>
+                                                <h4>Create Order <MDBIcon icon="rupee-sign" /></h4>
                                                 <Jumbotron>
 
                                                 </Jumbotron>
                                             </Col>
                                             <Col sm-4 md-3>
-                                                <h4>Total Clients <MDBIcon far icon="id-card" /></h4>
+                                                <h4>Job Status <MDBIcon far icon="id-card" /></h4>
                                                 <Jumbotron>
+                                                    <div>
 
+                                                    </div>
                                                 </Jumbotron>
                                             </Col>
                                         </Row>
@@ -96,4 +114,5 @@ function adminDash() {
         </div>
     )
 }
+
 export default adminDash;

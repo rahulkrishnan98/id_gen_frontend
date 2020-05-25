@@ -8,17 +8,18 @@ import { Row, Col } from "reactstrap";
 import Router from 'next/router'
 import StepperExample from '../components/wizard';
 import ReactDOM from "react-dom";
-import Button from 'react-bootstrap/Button';
 import { MDBRow, MDBCol, MDBIcon } from "mdbreact";
 import Auth from '../utils/AuthService';
 import Loading from '../components/loader';
 import { useState, useContext } from 'react';
 import UserContext from '../utils/UserContext';
+import Button from 'react-bootstrap/Button'
 
 function clientDash() {
     const { role } = useContext(UserContext);
     console.log(role);
     useEffect(() => {
+        console.log(role);
         if (role === 'admin') {
             Router.push('/login');
         }
@@ -30,7 +31,7 @@ function clientDash() {
     };
     return (
         <div>
-            <h5 style={{ float: "right" }}><button type="button" onClick={e => redirectMe(e)} class="btn btn-light">Log-out <i class="fas fa-sign-out-alt"></i></button> </h5>
+            <h5 style={{ float: "right" }}><Button type="button" onClick={e => redirectMe(e)} variant='outline-dark'>Log-out </Button></h5>
             <div className="full-height">
                 <Jumbotron>
                     <h1 style={{ textAlign: "center" }}>Client Dashboard</h1>

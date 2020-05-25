@@ -44,7 +44,7 @@ class AuthService {
     }
 
     getAuthHeader() {
-        return { headers: { Authorization: 'Bearer' + this.getToken() } };
+        return { headers: { Authorization: 'Bearer ' + this.getToken() } };
     }
 
 }

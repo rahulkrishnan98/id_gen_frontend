@@ -6,7 +6,7 @@ import 'mdbreact/dist/css/mdb.css';
 import React from 'react';
 import App from 'next/app';
 import useContext from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import UserContext from '../utils/UserContext';
 import AuthService from '../utils/AuthService';
 import NProgress from 'nprogress'; //nprogress module
@@ -19,7 +19,7 @@ Router.events.on('routeChangeError', () => NProgress.done());
 export default class MyApp extends App {
     state = {
         isLogged: false,
-        role: 'user'
+        role: '',
     }
     componentDidMount = () => {
         const user = localStorage.getItem('id_token');
@@ -48,6 +48,10 @@ export default class MyApp extends App {
                     this.setState({
                         role: "admin"
                     })
+                } else {
+                    this.setState({
+                        role: "user"
+                    })
                 }
             }
             if (res.status == 401) {
@@ -61,10 +65,13 @@ export default class MyApp extends App {
     signOut = () => {
         localStorage.removeItem('id_token');
         this.setState({
-            isLogged: false
+            isLogged: false,
+            role: ''
         });
         Router.push("/");
     };
+
+
     render() {
         const { Component, pageProps } = this.props;
         return (
