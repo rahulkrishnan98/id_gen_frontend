@@ -42,7 +42,6 @@ function adminDash(props) {
                                 <Col sm-6 md-4>
                                     <h3> Start a new Job</h3>
                                     <OrderForm />
-
                                 </Col>
                                 <Col sm-6 md-4>
                                     <h3>Client Details</h3>
